@@ -1,6 +1,6 @@
-import { speak } from './tts.js';
-import { recognizeSpeech } from './speech-recognition.js';
-import { calculateSimilarity } from './similarity-analyzer.js';
+import { speak } from './tts-module.js';
+import { recognizeSpeech } from './speech-recognition-module.js';
+import { calculateSimilarity } from './similarity-analyzer-module.js';
 
 class SpeakingPractice {
     constructor() {
