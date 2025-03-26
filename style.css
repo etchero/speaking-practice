@@ -1,44 +1,46 @@
-/* 기존 스타일 유지 */
-body {
-    font-family: Arial, sans-serif;
-    line-height: 1.6;
-    margin: 0;
-    padding: 0;
-    background-color: #f4f4f4;
+/* 추가 커스텀 스타일 */
+.similarity-grade-A {
+    color: green;
 }
 
-/* 기존 스타일들 */
-.container {
-    width: 90%;
-    max-width: 1200px;
-    margin: 0 auto;
-    padding: 20px;
+.similarity-grade-B {
+    color: blue;
 }
 
-/* ... 기존 스타일 계속 유지 ... */
+.similarity-grade-C {
+    color: orange;
+}
 
-/* 새로운 발음 피드백 스타일 */
-.pronunciation-feedback {
-    background-color: #f8f9fa;
-    border: 1px solid #e9ecef;
-    border-radius: 5px;
-    padding: 15px;
+.similarity-grade-D {
+    color: red;
+}
+
+.similarity-grade-E {
+    color: darkred;
+    font-weight: bold;
+}
+
+/* 발음 피드백 스타일 */
+#pronunciation-feedback {
     margin-top: 20px;
+    padding: 15px;
+    background-color: #f8f9fa;
+    border-radius: 8px;
 }
 
-.pronunciation-feedback h4 {
+#pronunciation-feedback h4 {
     color: #007bff;
-    margin-bottom: 10px;
     border-bottom: 2px solid #007bff;
     padding-bottom: 5px;
+    margin-bottom: 10px;
 }
 
-.pronunciation-feedback ul {
+#pronunciation-feedback ul {
     list-style-type: none;
     padding: 0;
 }
 
-.pronunciation-feedback li {
+#pronunciation-feedback li {
     background-color: #fff;
     margin-bottom: 10px;
     padding: 10px;
@@ -46,36 +48,6 @@ body {
     box-shadow: 0 2px 4px rgba(0,0,0,0.1);
 }
 
-.pronunciation-feedback li strong {
+#pronunciation-feedback li strong {
     color: #28a745;
-}
-
-.pronunciation-feedback li br {
-    margin: 5px 0;
-}
-
-/* 유사도 색상 클래스 (기존 유지) */
-.similarity-percentage-0-50 { 
-    color: red; 
-    font-weight: bold;
-}
-.similarity-percentage-51-60 { 
-    color: orange; 
-    font-weight: bold;
-}
-.similarity-percentage-61-70 { 
-    color: purple; 
-    font-weight: bold;
-}
-.similarity-percentage-71-80 { 
-    color: blue; 
-    font-weight: bold;
-}
-.similarity-percentage-81-90 { 
-    color: #90EE90; 
-    font-weight: bold;
-}
-.similarity-percentage-91-100 { 
-    color: #006400; 
-    font-weight: bold;
 }
