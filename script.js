@@ -23,6 +23,7 @@ class SpeakingPractice {
         this.currentTranslationDisplay = document.getElementById('current-translation');
         this.similarityScoreDisplay = document.getElementById('similarity-score');
         this.pronunciationGradeDisplay = document.getElementById('pronunciation-grade');
+        this.recordingStatusDisplay = document.getElementById('recording-status');
     }
 
     setupEventListeners() {
@@ -129,6 +130,7 @@ class SpeakingPractice {
                 this.mediaRecorder.start();
                 this.startRecordingBtn.disabled = true;
                 this.stopRecordingBtn.disabled = false;
+                this.recordingStatusDisplay.textContent = '녹음 시작';
             })
             .catch(error => {
                 console.error('녹음 권한 오류:', error);
@@ -141,6 +143,7 @@ class SpeakingPractice {
             this.mediaRecorder.stop();
             this.startRecordingBtn.disabled = false;
             this.stopRecordingBtn.disabled = true;
+            this.recordingStatusDisplay.textContent = '녹음 중단';
         }
     }
 
@@ -186,6 +189,7 @@ class SpeakingPractice {
         this.similarityScoreDisplay.textContent = '';
         this.pronunciationGradeDisplay.textContent = '';
         this.pronunciationGradeDisplay.className = '';
+        this.recordingStatusDisplay.textContent = '';
     }
 }
 
