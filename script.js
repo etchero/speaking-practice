@@ -1,15 +1,28 @@
-import { speak } from './tts-module.js';
-import { recognizeSpeech } from './speech-recognition-module.js';
-import { calculateSimilarity, detailedPronunciationFeedback } from './similarity-analyzer-module.js';
+// Mock modules to replace missing dependencies
+const speak = async (text) => {
+    console.log('Speaking:', text);
+};
+
+const recognizeSpeech = async (audioSrc) => {
+    console.log('Recognizing speech from:', audioSrc);
+    return 'Recognized speech text';
+};
 
 class SpeakingPractice {
     constructor() {
-        this.sentences = [];
+        this.sentences = [
+            { 
+                english: 'Hello, how are you today?', 
+                korean: '오늘 어떻게 지내세요?' 
+            },
+            { 
+                english: 'I am learning English speaking.', 
+                korean: '저는 영어 말하기를 배우고 있습니다.' 
+            }
+        ];
         this.currentSentenceIndex = 0;
         this.mediaRecorder = null;
         this.audioChunks = [];
-        this.nativeWaveSurfer = null;
-        this.userWaveSurfer = null;
         this.userStats = {
             totalPractices: 0,
             averageSimilarity: 0,
@@ -19,11 +32,10 @@ class SpeakingPractice {
         this.initializeElements();
         this.setupEventListeners();
         this.setupAudioVisualization();
-        this.loadUserStats();
+        this.loadCurrentSentence();
     }
 
     initializeElements() {
-        // 기존 요소들
         this.fileUpload = document.getElementById('file-upload');
         this.manualInput = document.getElementById('manual-input');
         this.englishSentence = document.getElementById('current-english-sentence');
@@ -36,20 +48,13 @@ class SpeakingPractice {
         this.nextSentenceBtn = document.getElementById('next-sentence');
         this.similarityPercentage = document.getElementById('similarity-percentage');
         
-        // 새로운 피드백 요소 추가
         this.pronunciationFeedbackElement = document.createElement('div');
         this.pronunciationFeedbackElement.id = 'pronunciation-feedback';
         this.pronunciationFeedbackElement.classList.add('pronunciation-feedback');
         document.querySelector('.practice-section').appendChild(this.pronunciationFeedbackElement);
-        
-        // 통계 표시 요소
-        this.statsDisplay = document.createElement('div');
-        this.statsDisplay.id = 'user-stats';
-        document.querySelector('.practice-section').appendChild(this.statsDisplay);
     }
 
     setupEventListeners() {
-        // 기존 이벤트 리스너들
         this.fileUpload.addEventListener('change', this.handleFileUpload.bind(this));
         this.manualInput.addEventListener('input', this.handleManualInput.bind(this));
         this.startRecordingBtn.addEventListener('click', this.startRecording.bind(this));
@@ -59,44 +64,126 @@ class SpeakingPractice {
     }
 
     setupAudioVisualization() {
-        // WaveSurfer 초기화 로직 (기존과 동일)
-        this.nativeWaveSurfer = WaveSurfer.create({
-            container: '#native-waveform',
-            waveColor: 'blue',
-            progressColor: 'purple'
-        });
+        // Mock WaveSurfer initialization if WaveSurfer is not available
+        if (typeof WaveSurfer !== 'undefined') {
+            this.nativeWaveSurfer = WaveSurfer.create({
+                container: '#native-waveform',
+                waveColor: 'blue',
+                progressColor: 'purple'
+            });
 
-        this.userWaveSurfer = WaveSurfer.create({
-            container: '#user-waveform',
-            waveColor: 'green',
-            progressColor: 'orange'
-        });
+            this.userWaveSurfer = WaveSurfer.create({
+                container: '#user-waveform',
+                waveColor: 'green',
+                progressColor: 'orange'
+            });
+        }
     }
 
-    // 기존 메서드들 유지 (handleFileUpload, readTextFile 등)
+    loadCurrentSentence() {
+        const currentSentence = this.sentences[this.currentSentenceIndex];
+        this.englishSentence.textContent = currentSentence.english;
+        this.koreanMeaning.textContent = currentSentence.korean;
+    }
+
+    handleFileUpload(event) {
+        const file = event.target.files[0];
+        if (file) {
+            const reader = new FileReader();
+            reader.onload = (e) => {
+                const content = e.target.result;
+                this.parseUploadedContent(content);
+            };
+            reader.readAsText(file);
+        }
+    }
+
+    parseUploadedContent(content) {
+        try {
+            const lines = content.split('\n');
+            const newSentences = lines.map(line => {
+                const [english, korean] = line.split('|').map(s => s.trim());
+                return { english, korean };
+            }).filter(s => s.english && s.korean);
+
+            if (newSentences.length > 0) {
+                this.sentences = newSentences;
+                this.currentSentenceIndex = 0;
+                this.loadCurrentSentence();
+            }
+        } catch (error) {
+            console.error('파일 파싱 오류:', error);
+            alert('파일 형식이 올바르지 않습니다.');
+        }
+    }
+
+    handleManualInput() {
+        const input = this.manualInput.value;
+        const [english, korean] = input.split('|').map(s => s.trim());
+        
+        if (english && korean) {
+            this.sentences = [{ english, korean }];
+            this.currentSentenceIndex = 0;
+            this.loadCurrentSentence();
+        }
+    }
+
+    startRecording() {
+        // Basic audio recording implementation
+        if (navigator.mediaDevices && navigator.mediaDevices.getUserMedia) {
+            navigator.mediaDevices.getUserMedia({ audio: true })
+                .then(stream => {
+                    this.mediaRecorder = new MediaRecorder(stream);
+                    this.audioChunks = [];
+
+                    this.mediaRecorder.addEventListener('dataavailable', event => {
+                        this.audioChunks.push(event.data);
+                    });
+
+                    this.mediaRecorder.addEventListener('stop', () => {
+                        const audioBlob = new Blob(this.audioChunks, { type: 'audio/wav' });
+                        const audioUrl = URL.createObjectURL(audioBlob);
+                        this.userAudio.src = audioUrl;
+                    });
+
+                    this.mediaRecorder.start();
+                    this.startRecordingBtn.disabled = true;
+                    this.stopRecordingBtn.disabled = false;
+                })
+                .catch(error => {
+                    console.error('녹음 권한 오류:', error);
+                    alert('마이크 접근 권한을 확인해주세요.');
+                });
+        } else {
+            alert('이 브라우저는 녹음을 지원하지 않습니다.');
+        }
+    }
+
+    stopRecording() {
+        if (this.mediaRecorder && this.mediaRecorder.state !== 'inactive') {
+            this.mediaRecorder.stop();
+            this.startRecordingBtn.disabled = false;
+            this.stopRecordingBtn.disabled = true;
+        }
+    }
 
     async compareAudio() {
         try {
-            // 사용자 음성 텍스트로 변환
             const userText = await recognizeSpeech(this.userAudio.src);
-            
-            // 원어민 문장과 사용자 음성 텍스트 유사도 계산
             const currentSentence = this.sentences[this.currentSentenceIndex];
+            
+            const { calculateSimilarity, detailedPronunciationFeedback } = await import('./similarity-analyzer-module.js');
+            
             const similarity = await calculateSimilarity(
                 currentSentence.english, 
                 userText
             );
 
-            // 상세 발음 피드백 가져오기
             const pronunciationFeedback = await detailedPronunciationFeedback(
                 currentSentence.english, 
                 userText
             );
 
-            // 통계 업데이트
-            this.updatePracticeStats(similarity);
-            
-            // 유사도 및 발음 피드백 표시
             this.displaySimilarityResult(similarity);
             this.displayPronunciationFeedback(pronunciationFeedback);
         } catch (error) {
@@ -106,7 +193,6 @@ class SpeakingPractice {
     }
 
     displaySimilarityResult(similarity) {
-        // 유사도 색상 클래스 동적 추가
         this.similarityPercentage.textContent = `${similarity.toFixed(2)}%`;
         this.similarityPercentage.className = this.getSimilarityColorClass(similarity);
     }
@@ -121,7 +207,6 @@ class SpeakingPractice {
     }
 
     displayPronunciationFeedback(feedback) {
-        // 상세 발음 피드백 표시
         this.pronunciationFeedbackElement.innerHTML = `
             <h4>발음 피드백</h4>
             <ul>
@@ -136,7 +221,6 @@ class SpeakingPractice {
         `;
     }
 
-    // 기존의 loadNextSentence, updatePracticeStats 등의 메서드 유지
     loadNextSentence() {
         this.currentSentenceIndex = (this.currentSentenceIndex + 1) % this.sentences.length;
         this.loadCurrentSentence();
@@ -145,8 +229,6 @@ class SpeakingPractice {
         this.similarityPercentage.textContent = '';
         this.pronunciationFeedbackElement.innerHTML = '';
     }
-
-    // 다른 기존 메서드들 (startRecording, stopRecording 등) 유지
 }
 
 // 페이지 로드 시 초기화
