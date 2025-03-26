@@ -1,0 +1,146 @@
+body {
+    font-family: Arial, sans-serif;
+    line-height: 1.6;
+    margin: 0;
+    padding: 0;
+    background-color: #f4f4f4;
+}
+
+.container {
+    width: 90%;
+    max-width: 1200px;
+    margin: 0 auto;
+    padding: 20px;
+}
+
+.title-box {
+    border: 3px solid #007bff;
+    text-align: center;
+    padding: 20px;
+    margin-bottom: 30px;
+}
+
+.title-box h1 {
+    color: #007bff;
+    margin: 0;
+    font-size: 2.5em;
+}
+
+.title-box h2 {
+    color: #007bff;
+    margin: 0;
+    font-size: 2em;
+}
+
+.file-upload-section {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    margin-bottom: 30px;
+}
+
+#file-upload {
+    display: none;
+}
+
+.file-upload-btn {
+    background-color: #28a745;
+    color: white;
+    padding: 10px 20px;
+    border-radius: 5px;
+    cursor: pointer;
+    margin-bottom: 15px;
+}
+
+#manual-input {
+    width: 100%;
+    min-height: 100px;
+    padding: 10px;
+    margin-top: 15px;
+}
+
+.practice-section {
+    background-color: white;
+    border-radius: 10px;
+    padding: 20px;
+    box-shadow: 0 4px 6px rgba(0,0,0,0.1);
+}
+
+.sentence-display {
+    display: flex;
+    justify-content: space-between;
+    margin-bottom: 20px;
+}
+
+.english-sentence, .korean-meaning {
+    width: 48%;
+    border: 1px solid #ddd;
+    padding: 15px;
+}
+
+.audio-section {
+    display: flex;
+    justify-content: space-between;
+    margin-bottom: 20px;
+}
+
+.native-audio, .user-audio {
+    width: 48%;
+}
+
+canvas {
+    width: 100%;
+    height: 100px;
+    background-color: #f1f1f1;
+}
+
+.similarity-result {
+    text-align: center;
+    margin-bottom: 20px;
+}
+
+#similarity-percentage {
+    font-size: 2em;
+    font-weight: bold;
+}
+
+.controls {
+    display: flex;
+    justify-content: space-between;
+}
+
+button {
+    padding: 10px 20px;
+    border: none;
+    border-radius: 5px;
+    cursor: pointer;
+    transition: background-color 0.3s ease;
+}
+
+#start-recording {
+    background-color: #28a745;
+    color: white;
+}
+
+#stop-recording {
+    background-color: #dc3545;
+    color: white;
+}
+
+#compare-audio {
+    background-color: #007bff;
+    color: white;
+}
+
+#next-sentence {
+    background-color: #6c757d;
+    color: white;
+}
+
+/* 유사도 색상 */
+.similarity-percentage-0-50 { color: red; }
+.similarity-percentage-51-60 { color: orange; }
+.similarity-percentage-61-70 { color: purple; }
+.similarity-percentage-71-80 { color: blue; }
+.similarity-percentage-81-90 { color: #90EE90; }
+.similarity-percentage-91-100 { color: #006400; }
