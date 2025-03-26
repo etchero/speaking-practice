@@ -3,67 +3,94 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>안동 영어종결센터 - Speaking Practice</title>
+    <title>Speaking Practice</title>
+    <link href="https://cdn.jsdelivr.net/npm/tailwindcss@2.2.19/dist/tailwind.min.css" rel="stylesheet">
     <link rel="stylesheet" href="style.css">
 </head>
-<body>
-    <div class="container">
-        <header>
-            <div class="title-box">
-                <h1>안동 영어종결센터</h1>
-                <h2>Speaking Practice</h2>
+<body class="bg-gray-100">
+    <div class="container mx-auto px-4 py-8">
+        <h1 class="text-3xl font-bold text-center mb-6 text-blue-600">Speaking Practice</h1>
+        
+        <div class="max-w-2xl mx-auto bg-white shadow-lg rounded-lg p-6">
+            <div class="mb-4">
+                <label for="english-sentence" class="block text-gray-700 font-bold mb-2">English Sentence</label>
+                <input 
+                    type="text" 
+                    id="english-sentence" 
+                    class="w-full px-3 py-2 border rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-500"
+                    placeholder="Enter English sentence"
+                >
             </div>
-        </header>
-
-        <main>
-            <div class="file-upload-section">
-                <input type="file" id="file-upload" accept=".txt,.doc,.docx,.pdf,.hwp">
-                <label for="file-upload" class="file-upload-btn">파일 업로드</label>
-                <textarea id="manual-input" placeholder="또는 여기에 직접 영어 문장과 한국어 뜻을 입력하세요"></textarea>
+            
+            <div class="mb-4">
+                <label for="korean-meaning" class="block text-gray-700 font-bold mb-2">Korean Meaning</label>
+                <input 
+                    type="text" 
+                    id="korean-meaning" 
+                    class="w-full px-3 py-2 border rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-500"
+                    placeholder="Enter Korean meaning"
+                >
             </div>
-
-            <div class="practice-section">
-                <div class="sentence-display">
-                    <div class="english-sentence">
-                        <h3>English Sentence</h3>
-                        <p id="current-english-sentence"></p>
+            
+            <div class="flex space-x-4 mb-4">
+                <button 
+                    id="save-sentence" 
+                    class="bg-blue-500 hover:bg-blue-600 text-white font-bold py-2 px-4 rounded transition duration-300"
+                >
+                    Save Sentence
+                </button>
+                <button 
+                    id="clear-sentence" 
+                    class="bg-red-500 hover:bg-red-600 text-white font-bold py-2 px-4 rounded transition duration-300"
+                >
+                    Clear
+                </button>
+            </div>
+            
+            <div id="sentence-list" class="mt-4">
+                <h2 class="text-xl font-semibold mb-2">Saved Sentences</h2>
+                <ul id="sentences" class="space-y-2"></ul>
+            </div>
+            
+            <div class="mt-6">
+                <h2 class="text-xl font-semibold mb-4">Practice</h2>
+                <div id="practice-area" class="bg-gray-50 p-4 rounded-lg">
+                    <div class="mb-4">
+                        <p id="current-sentence" class="text-lg font-medium text-gray-800"></p>
+                        <p id="current-translation" class="text-gray-600"></p>
                     </div>
-                    <div class="korean-meaning">
-                        <h3>한국어 뜻</h3>
-                        <p id="current-korean-meaning"></p>
+                    
+                    <div class="flex space-x-4">
+                        <button 
+                            id="start-recording" 
+                            class="bg-green-500 hover:bg-green-600 text-white font-bold py-2 px-4 rounded transition duration-300"
+                        >
+                            Start Recording
+                        </button>
+                        <button 
+                            id="stop-recording" 
+                            class="bg-red-500 hover:bg-red-600 text-white font-bold py-2 px-4 rounded transition duration-300 opacity-50 cursor-not-allowed"
+                            disabled
+                        >
+                            Stop Recording
+                        </button>
+                        <button 
+                            id="analyze-pronunciation" 
+                            class="bg-purple-500 hover:bg-purple-600 text-white font-bold py-2 px-4 rounded transition duration-300"
+                        >
+                            Analyze Pronunciation
+                        </button>
                     </div>
-                </div>
-
-                <div class="audio-section">
-                    <div class="native-audio">
-                        <h3>원어민 음성</h3>
-                        <audio id="native-audio" controls></audio>
-                        <canvas id="native-waveform"></canvas>
+                    
+                    <div id="pronunciation-result" class="mt-4">
+                        <p id="similarity-score" class="font-bold"></p>
+                        <p id="pronunciation-grade" class="font-bold"></p>
                     </div>
-
-                    <div class="user-audio">
-                        <h3>내 음성</h3>
-                        <audio id="user-audio" controls></audio>
-                        <canvas id="user-waveform"></canvas>
-                    </div>
-                </div>
-
-                <div class="similarity-result">
-                    <h3>유사도 결과</h3>
-                    <div id="similarity-percentage"></div>
-                </div>
-
-                <div class="controls">
-                    <button id="start-recording">녹음 시작</button>
-                    <button id="stop-recording" disabled>녹음 종료</button>
-                    <button id="compare-audio">음성 비교</button>
-                    <button id="next-sentence">다음 문장</button>
                 </div>
             </div>
-        </main>
+        </div>
     </div>
 
-    <script src="https://cdnjs.cloudflare.com/ajax/libs/wavesurfer.js/6.4.0/wavesurfer.min.js"></script>
     <script type="module" src="script.js"></script>
 </body>
 </html>
