@@ -1,12 +1,12 @@
-// Simplified similarity analyzer without external dependencies
-export async function calculateSimilarity(originalSentence, userSentence) {
-    // Basic normalization
+// 간단한 유사도 계산 모듈
+export function calculateSimilarity(originalSentence, userSentence) {
+    // 기본 정규화
     const normalize = (text) => text.toLowerCase().replace(/[^\w\s]/gi, '');
     
     const normalizedOriginal = normalize(originalSentence);
     const normalizedUser = normalize(userSentence);
     
-    // Simple word-level similarity
+    // 단어 수준 유사도
     const originalWords = normalizedOriginal.split(/\s+/);
     const userWords = normalizedUser.split(/\s+/);
     
@@ -18,7 +18,7 @@ export async function calculateSimilarity(originalSentence, userSentence) {
     return Math.min(Math.max(similarity, 0), 100);
 }
 
-export async function detailedPronunciationFeedback(originalSentence, userSentence) {
+export function getPronunciationFeedback(originalSentence, userSentence) {
     const originalWords = originalSentence.toLowerCase().split(/\s+/);
     const userWords = userSentence.toLowerCase().split(/\s+/);
 
@@ -29,7 +29,7 @@ export async function detailedPronunciationFeedback(originalSentence, userSenten
 
         const userWord = userWords[index];
         
-        // Simple word comparison
+        // 단순 단어 비교
         if (word !== userWord) {
             feedback.push({
                 word: word,
@@ -40,13 +40,4 @@ export async function detailedPronunciationFeedback(originalSentence, userSenten
     });
 
     return feedback;
-}
-
-// Simple test functions for manual testing
-export function testSimilarity(originalSentence, userSentence) {
-    return calculateSimilarity(originalSentence, userSentence);
-}
-
-export function testPronunciationFeedback(originalSentence, userSentence) {
-    return detailedPronunciationFeedback(originalSentence, userSentence);
 }
